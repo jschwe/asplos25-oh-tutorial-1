@@ -9,15 +9,17 @@
 ## OpenHarmony OS
 
 - Opensource distributed Operating System
+  - Permissive Apache-2.0 license
 - Highly configurable for different scenarios
 - Component based design 
+  - Flexible tailoring to the hardware capabilities of a device
 
 Note: Component based design allows flexible combinations of components tailored to the hardware capabilities of the device
 
 
 ## System types
 
-- Mini system (MCUs, e.g. Cortex-M or 32 bit RISC-V)
+- Mini system (MCUs, e.g. Cortex-M)
     - RAM >= 128 KiB
 - Small system (application processors, e.g. Cortex-A)
     - RAM >= 1 MiB
@@ -45,14 +47,14 @@ Note:
 
 ## Driver framework
 
-- device drivers are usually highly coupled to the kernel
+- Device drivers are usually traditionally coupled to the kernel
 - OpenHarmony offers multiple kernels
 - [HDF] (Hardware Driver Foundation) provides unified driver abstraction
 
 [HDF]: https://docs.openharmony.cn/pages/v5.0/en/device-dev/driver/driver-overview-foundation.md
 
 
-![HDF Framework](HDF-architecture.png)
+![HDF Framework](assets/HDF-architecture.png)
 
 Note:
 
@@ -72,6 +74,7 @@ The HDF architecture consists of the following:
 
 
 
+
 ## Obtaining OpenHarmony Source code
 
 
@@ -79,7 +82,9 @@ The HDF architecture consists of the following:
 
 - OpenHarmony is a highly configurable Operating System Framework
 - Organized into Systems, Subsystems and Components
-- The [`repo`] tool is used to manage the multi-repository project
+- Split into many repositories
+
+[`repo`]: https://gerrit.googlesource.com/git-repo
 
 
 ## Obtaining the source code
@@ -125,24 +130,68 @@ repo init -u URL -b BRANCH -m chipsets/chipsetN.xml -g ohos:mini
 | `prebuilts` | Prebuilt toolchains |
 
 
-## Core Source directories
+## Core Source
 
 | **Directory**| **Description**|
 | -------- | -------- |
-| applications | Application samples, for example, **camera**.|
+| applications | Application samples |
 | base | Basic software service subsystem set and hardware service subsystem set.|
 | drivers | Driver subsystem.|
 | foundation | Basic system capability subsystem set.|
 | kernel | Kernel subsystem.|
 | test | Test subsystem.|
 
+Note: 
+    - foundation: E.g. ability, arkui, graphic, multimedia, window, ...
+    - base: account, location, security, web
 
-## Device related
 
-| Directory | Description |
-|-----|------|
-| `device/board` | |
-| `device/qemu`   |  |
-| `device/soc` |  |
-| `productdefine` | | 
-| `vendor` | |
+## Porting
+
+- Currently the number of supported devices is limited
+- [Mini], [Small] and [Standard] porting guides.
+- [Showcase rk3568 board](https://docs.openharmony.cn/pages/v5.0/en/device-dev/porting/porting-dayu200-on_standard-demo.md)
+
+[Mini]: https://docs.openharmony.cn/pages/v5.0/en/device-dev/porting/porting-minichip-overview.md
+[Small]: https://docs.openharmony.cn/pages/v5.0/en/device-dev/porting/porting-smallchip-prepare-needs.md
+[Standard]: https://docs.openharmony.cn/pages/v5.0/en/device-dev/porting/standard-system-porting-guide.md
+
+
+
+
+## Building
+
+- Requirements depend on built subset
+- Currently requires x86 Ubuntu host
+- [build.sh](https://docs.openharmony.cn/pages/v5.0/en/device-dev/quick-start/quickstart-pkg-common-build.md) build script.
+
+Example: Build OH for the rk3568 board
+```sh
+./build.sh --product-name rk3568
+```
+
+
+## hb tool
+
+- [`hb`] offers an interactive interface
+    - does not run on recent python versions
+- [`uv`](https://docs.astral.sh/uv/getting-started/installation/) allows conveniently installing hb with the correct python version
+
+```sh
+uv python install 3.8
+uv tool install build/hb --python 3.8
+hb set
+# interactive dialogue
+hb build
+```
+
+[`hb`]: https://docs.openharmony.cn/pages/v5.0/en/device-dev/subsystems/subsys-build-all.md
+
+
+## Build environment
+
+- [Official Dockerfile](https://gitee.com/openharmony/docs/blob/master/docker/Dockerfile)
+  - Not updated in a while
+- [My Dockerfile](https://gist.github.com/jschwe/0c6e69ef1dca87f50dd9a4d522aae000)
+  - Based on official dockerfile, updated for this presentation
+- Doesn't work on arm macs
