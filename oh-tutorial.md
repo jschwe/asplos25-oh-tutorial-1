@@ -172,7 +172,7 @@ Note:
 - All options are documented [here](https://docs.openharmony.cn/pages/v5.0/device-dev/subsystems/subsys-build-all.md)
 
 Example - Build OH for the rk3568 board:
-```sh
+```sh [ 1-2 | 3-4 ]
 # First time setup
 bash build/prebuilt_download.sh
 # actual build command
@@ -188,7 +188,7 @@ bash build/prebuilt_download.sh
   - Not updated in a while
 - [My Dockerfile](https://gist.github.com/jschwe/0c6e69ef1dca87f50dd9a4d522aae000)
   - Based on official dockerfile, updated for this presentation
-- Doesn't work on arm macs
+- Doesn't support arm
 
 
 ## build selected component
@@ -205,7 +205,7 @@ bash build/prebuilt_download.sh
 
 ## Flash selected component
 
-- Root permissions required
+- Root permissions required on device
 - Ensure [hdc] from the SDK is in PATH.
 
 ```sh
