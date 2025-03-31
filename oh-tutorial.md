@@ -74,6 +74,13 @@ The HDF architecture consists of the following:
 
 
 
+## Documentation
+
+- [OpenHarmony](https://docs.openharmony.cn/pages/v5.0/)
+- [Docs on Gitee](https://gitee.com/openharmony/docs/)
+- [Github mirror](https://github.com/openharmony-rs/openharmony-docs)
+
+
 
 ## Obtaining OpenHarmony Source code
 
@@ -159,15 +166,53 @@ Note:
 
 
 
-## Building
+## Building with build.sh
+
+- [build.sh](https://docs.openharmony.cn/pages/v5.0/en/device-dev/quick-start/quickstart-pkg-common-build.md) build script.
+- All options are documented [here](https://docs.openharmony.cn/pages/v5.0/device-dev/subsystems/subsys-build-all.md)
+
+Example - Build OH for the rk3568 board:
+```sh
+# First time setup
+bash build/prebuilt_download.sh
+# actual build command
+./build.sh --product-name rk3568
+```
+
+
+## Build environment
 
 - Requirements depend on built subset
 - Currently requires x86 Ubuntu host
-- [build.sh](https://docs.openharmony.cn/pages/v5.0/en/device-dev/quick-start/quickstart-pkg-common-build.md) build script.
+- [Official Dockerfile](https://gitee.com/openharmony/docs/blob/master/docker/Dockerfile)
+  - Not updated in a while
+- [My Dockerfile](https://gist.github.com/jschwe/0c6e69ef1dca87f50dd9a4d522aae000)
+  - Based on official dockerfile, updated for this presentation
+- Doesn't work on arm macs
 
-Example: Build OH for the rk3568 board
+
+## build selected component
+
+- Only build a single target / module
+- Independently flash only the changed `.so` files to the device
+- Beware of API / ABI changes!
+
 ```sh
-./build.sh --product-name rk3568
+./build.sh --product-name rk3568 \
+  --build-target=<module_name>
+```
+
+
+## Flash selected component
+
+- Root permissions required
+- Ensure [hdc] from the SDK is in PATH.
+
+```sh
+hdc file send lib.so /data/local/tmp/lib.so
+hdc shell chmod +x /data/local/tmp/lib.so
+hdc shell mv /data/local/tmp/lib.so /system/lib/lib.so
+# Reboot device or restart affected services
 ```
 
 
@@ -188,10 +233,10 @@ hb build
 [`hb`]: https://docs.openharmony.cn/pages/v5.0/en/device-dev/subsystems/subsys-build-all.md
 
 
-## Build environment
 
-- [Official Dockerfile](https://gitee.com/openharmony/docs/blob/master/docker/Dockerfile)
-  - Not updated in a while
-- [My Dockerfile](https://gist.github.com/jschwe/0c6e69ef1dca87f50dd9a4d522aae000)
-  - Based on official dockerfile, updated for this presentation
-- Doesn't work on arm macs
+## Summary
+
+- You can use `repo` to checkout the sources 
+- Modular architecture 
+- Complete Build environment is still a bit tricky to setup
+- Building individual modules works well
