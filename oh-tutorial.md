@@ -102,7 +102,7 @@ The HDF architecture consists of the following:
 
 ```sh [1-2 | 3 | 4]
 repo init -u https://gitee.com/openharmony/manifest \
-    -b OpenHarmony-v5.0.3-Release
+    -b OpenHarmony-5.0.3-Release
 repo sync -c
 repo forall -c 'git lfs pull'
 ```
